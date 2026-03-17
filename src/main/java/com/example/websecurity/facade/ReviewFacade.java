@@ -19,29 +19,29 @@ public class ReviewFacade {
 
     private final ReviewService reviewService;
 
-    public ReviewResponse getReviewById(Long id) {
-        Review review = reviewService.getReviewById(id);
+    public ReviewResponse getReviewById(Long id, Long userId) {
+        Review review = reviewService.getReviewByIdAndUserId(id, userId);
         return ReviewResponse.builder()
-                .id(review.getId())
-                .movieTitle(review.getMovieTitle())
-                .reviewText(review.getReviewText())
-                .rating(review.getRating())
-                .reviewDate(review.getCreated())
-                .build();
+            .id(review.getId())
+            .movieTitle(review.getMovieTitle())
+            .reviewText(review.getReviewText())
+            .rating(review.getRating())
+            .reviewDate(review.getCreated())
+            .build();
     }
 
-    public ReviewResponse updateReview(Long id, UpdateReviewRequest updateReviewRequest) {
-        Review review = reviewService.getReviewById(id);
+    public ReviewResponse updateReview(Long id, Long userId, UpdateReviewRequest updateReviewRequest) {
+        Review review = reviewService.getReviewByIdAndUserId(id, userId);
         review.setReviewText(updateReviewRequest.getReviewText());
         review.setRating(updateReviewRequest.getRating());
         Review updatedReview = reviewService.updateReview(review);
         return ReviewResponse.builder()
-                .id(updatedReview.getId())
-                .movieTitle(updatedReview.getMovieTitle())
-                .reviewText(updatedReview.getReviewText())
-                .rating(updatedReview.getRating())
-                .reviewDate(updatedReview.getCreated())
-                .build();
+            .id(updatedReview.getId())
+            .movieTitle(updatedReview.getMovieTitle())
+            .reviewText(updatedReview.getReviewText())
+            .rating(updatedReview.getRating())
+            .reviewDate(updatedReview.getCreated())
+            .build();
     }
 
     public List<ReviewResponse> getReviewsForUser(Long userId) {
@@ -49,11 +49,11 @@ public class ReviewFacade {
         List<Review> reviews = reviewService.getReviewsByUser(userId);
         for (Review review : reviews) {
             reviewResponses.add(
-                    ReviewResponse.builder()
-                            .id(review.getId())
-                            .movieTitle(review.getMovieTitle())
-                            .rating(review.getRating())
-                            .build()
+                ReviewResponse.builder()
+                    .id(review.getId())
+                    .movieTitle(review.getMovieTitle())
+                    .rating(review.getRating())
+                    .build()
             );
         }
         return reviewResponses;

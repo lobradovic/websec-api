@@ -30,4 +30,11 @@ public class ReviewService {
     public List<Review> getReviewsByUser(Long userId) {
         return reviewRepository.findByUserId(userId);
     }
+
+    public Review getReviewByIdAndUserId(Long reviewId, Long userId) {
+        return reviewRepository.findByIdAndUserId(reviewId, userId)
+            .orElseThrow(() -> new WebSecMissingDataException(
+                "Review with id " + reviewId + " not found for this user"
+            ));
+    }
 }
